@@ -238,6 +238,18 @@ function examSchedule($studentID) {
    mysqli_free_result($result);
 }
 
+function grade_list($studentId) {
+   include 'config/db_connect.php';
+   $sql = 'SELECT DISTINCT student_idstuden, courceName,grade.score FROM grade,cource WHERE cource.idcource = grade.cource_idcource AND student_idstudent='.$studentId;
+   $result = mysqli_query($conn, $sql);
+   $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   for($i=0; $i<count($pst); $i++){
+      echo "courceName: ".$pst[$i]['cource.courceName']."  grade: ".$pst [$i]['grade.score']."\n";
+   }
+   
+   mysqli_free_result($result);
+}
+
 function view1() {
    include 'config/db_connect.php';
    $sql = 'SELECT * FROM GoodProf';
@@ -300,7 +312,7 @@ $a=2;
    if($a == 3){deleteSingel($studentID);}
    if($a == 4){edit($studentID);}
    if($a == 5){viewdetail($studentID);}
-   if($a == 6){}
+   if($a == 6){grade_list($studentId);}
    if($a == 7){presentation($studentID);}
    if($a == 8){evaluation($studentID);}
    if($a == 9){examSchedule($studentID)}
