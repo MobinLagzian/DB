@@ -64,6 +64,154 @@ function reserve($studentID){
     
 }
 
+function showSchedule($studentID) {
+
+   print("\n\nYour term schedule: \n");
+
+   $sql = 'SELECT DISTINCT cource.courceName, cource.class, professor.profname
+            FROM termSchedule
+            WHERE student_idstudent='.$studentID ;
+   $result = mysqli_query($conn, $sql);
+   $schedule = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   
+   for($i=0; $i<count($schedule); $i++){
+      echo "courceName: ".$schedule[$i]['cource.courceName']."  class: ".$schedule [$i]['cource.class']."  profname: ".$schedule [$i]['professor.profname']."\n";
+   }
+   mysqli_free_result($result);
+
+
+}
+function addcourse($studentID) {
+
+   include 'config/db_connect.php';
+
+   $openDate = 2023-07-2;
+   $closeDate = 2023-07-7;
+   if(date("Y-m-d") < $openDate and date("Y-m-d") > $closeDate){
+      print("we are not in selection time");
+      return(0);
+   }
+
+   // show courses
+   print("\n\nthese are list of courses: \n");
+
+   $sql = 'SELECT idcource,courceName FROM cource';
+   $result = mysqli_query($conn, $sql);
+   $courses = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   
+   for($i=0; $i<count($courses); $i++){
+      echo "course ID: ".$courses[$i]['idcource']."  course Name: ".$courses[$i]['courceName']."\n";
+   }
+
+   mysqli_free_result($result);
+
+
+
+   //add course
+   print("\n\nyou want select a corse?(enter course ID) \n");
+   
+   $selectedCourse = 12345;
+
+   $sql = 'INSERT INTO choose VALUES ('.$studentID.', '.$selectedCourse.')';
+   if (mysqli_query($conn, $sql)) {
+      echo "Your cource researved successfully";
+    } else {
+      echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+    mysqli_free_result($result);
+   
+   for($i=0; $i<count($schedule); $i++){
+      echo "courceName: ".$schedule[$i]['cource.courceName']."  class: ".$schedule [$i]['cource.class']."  profname: ".$schedule [$i]['professor.profname']."\n";
+   }
+   mysqli_free_result($result);
+
+
+   //delete course
+   print("\n\nDo you want delete course? (enter course ID): \n");  
+   
+   $deletedCourse=12345;
+
+   $sql = 'DELETE FROM choose WHERE cource_idcource = '.$deletedCourse .' AND student_idstudent = '.$studentID;
+   if (mysqli_query($conn, $sql)) {
+      echo "Your course deleted successfully\n";
+   } else {
+      echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+   }
+}
+
+function edit($studentID) {
+   include 'config/db_connect.php';
+   $name='hassan mohammadi';
+   $sql= 'SELECT sname from student WHERE idstudent='.$studentID;
+   $result = mysqli_query($conn, $sql);
+   $edit = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+   for($i=0; $i<count($edit); $i++){
+      echo "  name: ".$edit[$i]['sname']."\n";
+   }
+   
+   mysqli_free_result($result);
+   
+   $sql = "UPDATE student SET student.sname = '".$name."' where idstudent =".$studentID;
+   if (mysqli_query($conn, $sql)) {
+      echo "Your cource researved successfully";
+    } else {
+      echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+    mysqli_free_result($result);
+   mysqli_free_result($result);
+
+}
+function presentation($studentId){
+   include 'config/db_connect.php';
+   $sql= 'SELECT cource.courceName, present.classtime, present.status FROM cource,present  
+   WHERE present.student_idstudent='.$studentId.' AND  present.cource_idcource=coursce.idcource GROUP BY present.student_idstudent';
+   $result = mysqli_query($conn, $sql);
+   $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+   for($i=0; $i<count($pst); $i++){
+      echo "courceName: ".$pst[$i]['cource.courceName']."  classtime: ".$pst [$i]['present.classtime']."  status: ".$pst [$i]['present.status']."\n";
+   }
+   mysqli_free_result($result);
+
+}
+function viewdetail($studentId) {
+   include 'config/db_connect.php';
+   $sql = 'SELECT * FROM termSchedule';
+   $result = mysqli_query($conn, $sql);
+   $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   for($i=0; $i<count($pst); $i++){
+      echo "courceName: ".$pst[$i]['cource.courceName']."  classtime: ".$pst [$i]['present.classtime']."  status: ".$pst [$i]['present.status']."\n";
+   }
+}
+function view1() {
+   include 'config/db_connect.php';
+   $sql = 'SELECT * FROM GoodProf';
+   $result = mysqli_query($conn, $sql);
+   $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   for($i=0; $i<count($pst); $i++){
+      echo "idprofessor: ".$pst[$i]['professor.idprofessor']."  profname: ".$pst [$i]['professor.profname']."\n";
+   }
+   professor.idprofessor,professor.profname
+}
+function view2() {
+   include 'config/db_connect.php';
+   $sql = 'SELECT * FROM passedLessons';
+   $result = mysqli_query($conn, $sql);
+   $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   for($i=0; $i<count($pst); $i++){
+      echo "courceName: ".$pst[$i]['cource.courceName']."  classtime: ".$pst [$i]['present.classtime']."  status: ".$pst [$i]['present.status']."\n";
+   }
+}
+function view3() {
+   include 'config/db_connect.php';
+   $sql = 'SELECT * FROM passedLessons';
+   $result = mysqli_query($conn, $sql);
+   $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   for($i=0; $i<count($pst); $i++){
+      echo "courceName: ".$pst[$i]['cource.courceName']."  classtime: ".$pst [$i]['present.classtime']."  status: ".$pst [$i]['present.status']."\n";
+   }
+}
 
 
    $studentID = 991276264;
@@ -78,18 +226,26 @@ function reserve($studentID){
         6 for view report card\n
         7 for view presentation\n
         8 for avaluate professors\n
-        9 for view exam Schedule\n");
-
-   $a = 1;
+        9 for view exam Schedule\n
+        10 for view 1
+        11 for view 2
+        12 for view 3");
+$a=2;
    if($a == 0){reserve($studentID);}
    if($a == 1){showSchedule($studentID);}
    if($a == 2){addcourse($studentID);}
    if($a == 3){}
-   if($a == 4){}
-   if($a == 5){}
+   if($a == 4){edit($studentID);}
+   if($a == 5){viewdetail($studentID);}
    if($a == 6){}
-   if($a == 7){}
+   if($a == 7){presentation($studentID);}
    if($a == 8){}
    if($a == 9){}
+   if($a == 10){view1();}
+   if($a == 11){view2();}
+   if($a == 12){view3();}
+   
+
+
 ?>
 
