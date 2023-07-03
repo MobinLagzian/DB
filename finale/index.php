@@ -234,23 +234,32 @@ function view1() {
    for($i=0; $i<count($pst); $i++){
       echo "idprofessor: ".$pst[$i]['professor.idprofessor']."  profname: ".$pst [$i]['professor.profname']."\n";
    }
-   
+}
 function view2() {
    include 'config/db_connect.php';
-   $sql = 'SELECT * FROM passedLessons';
+   $sql = 'SELECT * FROM drop';
+   $result = mysqli_query($conn, $sql);
+   $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   for($i=0; $i<count($pst); $i++){
+      echo "idstudent: ".$pst[$i]['student.idstudent']."  name : ".$pst [$i]['student.sname ']."\n";
+   }
+}
+function view3($studentId) {
+   include 'config/db_connect.php';
+   $sql = 'SELECT courceName FROM passedLessons WHERE student_idstudent='.$studentId;
    $result = mysqli_query($conn, $sql);
    $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
    for($i=0; $i<count($pst); $i++){
       echo "courceName: ".$pst[$i]['cource.courceName']."  classtime: ".$pst [$i]['present.classtime']."  status: ".$pst [$i]['present.status']."\n";
    }
 }
-function view3() {
+function view4() {
    include 'config/db_connect.php';
-   $sql = 'SELECT * FROM passedLessons';
+   $sql = 'SELECT courceName FROM AStudents ';
    $result = mysqli_query($conn, $sql);
    $pst = mysqli_fetch_all($result, MYSQLI_ASSOC);
    for($i=0; $i<count($pst); $i++){
-      echo "courceName: ".$pst[$i]['cource.courceName']."  classtime: ".$pst [$i]['present.classtime']."  status: ".$pst [$i]['present.status']."\n";
+      echo $pst[$i]."\n";
    }
 }
 
@@ -270,7 +279,8 @@ function view3() {
         9 for view exam Schedule\n
         10 for view 1
         11 for view 2
-        12 for view 3");
+        12 for view 3
+        13 for view 4");
 $a=2;
    if($a == 0){reserve($studentID);}
    if($a == 1){showSchedule($studentID);}
@@ -284,7 +294,8 @@ $a=2;
    if($a == 9){}
    if($a == 10){view1();}
    if($a == 11){view2();}
-   if($a == 12){view3();}
+   if($a == 12){view3(studentId);}
+   if($a == 13){view4();}
    
 
 
