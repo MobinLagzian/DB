@@ -226,6 +226,18 @@ function evaluation($studentID) {
     }
    mysqli_free_result($result);
 }
+function examSchedule($studentID) {
+   include 'config/db_connect.php';
+   print("\n\nthese are your exams: \n");
+   $sql= 'SELECT course.courceName,exam.date,exam.time,exam.location FROM exam, cource WHERE exam.cource_idcource = cource.idcource';
+   $result = mysqli_query($conn, $sql);
+   $exams = mysqli_fetch_all($result, MYSQLI_ASSOC);
+   for($i=0; $i<count($professor); $i++){
+      echo "Course name: ".$exams[$i]['course.courceName']."  exam time: ".$exams [$i]['exam.date'].' '. .$exams [$i]['exam.time'].'Course location: '.$exams[$i]['exam.location']"\n";
+   } 
+   mysqli_free_result($result);
+}
+
 function view1() {
    include 'config/db_connect.php';
    $sql = 'SELECT * FROM GoodProf';
@@ -291,7 +303,7 @@ $a=2;
    if($a == 6){}
    if($a == 7){presentation($studentID);}
    if($a == 8){evaluation($studentID);}
-   if($a == 9){}
+   if($a == 9){examSchedule($studentID)}
    if($a == 10){view1();}
    if($a == 11){view2();}
    if($a == 12){view3(studentId);}
